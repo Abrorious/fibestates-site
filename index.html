@@ -4,23 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci Estates — Dubai real estate, by the golden ratio</title>
     <meta name="description"
-        content="Secure high-ROI off-plan properties in Dubai with expert, zero-fee guidance. Exclusive access to Emaar, Damac, and Sobha projects.">
-    <meta property="og:title" content="Fibonacci Estates | Smart Investments in Dubai">
+        content="Zero-fee advisory on Dubai off-plan property. Travel through time with our investor Time Machine: payment plans, rental income, equity and returns, year by year.">
+    <meta property="og:title" content="Fibonacci Estates — Wealth grows in spirals">
     <meta property="og:description"
-        content="Expert real estate guidance for off-plan properties. No commission, VIP access.">
-    <meta property="og:image" content="assets/hero-bg.png">
-    <title>Fibonacci Estates | Exclusive Dubai Real Estate</title>
-    <!-- Google Fonts -->
+        content="Run any Dubai off-plan project through the Investor Time Machine. Direct developer prices, zero fees.">
+    <meta property="og:image" content="https://fibestates.com/assets/hero-bg.png">
+    <meta property="og:url" content="https://fibestates.com/">
+    <meta name="theme-color" content="#07080c">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307080c'/%3E%3Cpath d='M32 32a3 3 0 0 1 3 3 5 5 0 0 1-5 5 8 8 0 0 1-8-8 13 13 0 0 1 13-13 21 21 0 0 1 21 21' fill='none' stroke='%23d9b46c' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Manrope:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=3">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css?v=4">
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DMK17MYB8P"></script>
@@ -33,601 +35,427 @@
 </head>
 
 <body>
+    <!-- WebGL golden spiral (fixed background) -->
+    <canvas id="spiral" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
 
     <!-- Header -->
-    <header id="navbar">
-        <div class="container nav-content">
-            <a href="#" class="logo">Fibonacci <span class="gold-text">Estates.</span></a>
-            <div class="menu-toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#why-off-plan">Why Off-Plan</a></li>
-                    <li><a href="#comparison">Compare</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#" class="btn-primary-small open-modal">Get Guide</a></li>
-                </ul>
-            </nav>
-        </div>
+    <header class="nav" id="nav">
+        <a href="#top" class="brand" aria-label="Fibonacci Estates — home">
+            <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+                <path d="M32 32a3 3 0 0 1 3 3 5 5 0 0 1-5 5 8 8 0 0 1-8-8 13 13 0 0 1 13-13 21 21 0 0 1 21 21" />
+            </svg>
+            <span>Fibonacci <em>Estates</em></span>
+        </a>
+        <nav class="nav-links" id="navLinks">
+            <a href="#ratio">The ratio</a>
+            <a href="#time-machine">Time Machine</a>
+            <a href="#collections">Collections</a>
+            <a href="#broker">Advisor</a>
+            <a href="#" class="btn btn-gold btn-sm open-modal">Get the Guide</a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span>
+        </button>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-overlay"></div>
-        <div class="container hero-content fade-in-up">
-            <h1 class="hero-title">Secure Prime Dubai Real Estate <span class="italic-serif gold-text">Directly from
-                    Developers</span></h1>
-            <p class="hero-subtitle">High-yield off-plan investments. Expert guidance. 100% Transparent.</p>
-            <div class="hero-btns">
-                <a href="#projects" class="btn-primary">View Projects</a>
-                <a href="#why-off-plan" class="btn-secondary">Why Invest?</a>
-            </div>
-        </div>
-    </section>
+    <!-- Fibonacci progress rail -->
+    <ol class="rail" id="rail" aria-label="Sections">
+        <li><a href="#top" data-target="top">1</a></li>
+        <li><a href="#ratio" data-target="ratio">2</a></li>
+        <li><a href="#off-plan" data-target="off-plan">3</a></li>
+        <li><a href="#time-machine" data-target="time-machine">5</a></li>
+        <li><a href="#collections" data-target="collections">8</a></li>
+        <li><a href="#broker" data-target="broker">13</a></li>
+        <li><a href="#begin" data-target="begin">21</a></li>
+    </ol>
 
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="container stats-grid">
-            <div class="stat-item">
-                <h3 class="counter" data-target="50">0</h3>
-                <p>Investors Served</p>
-            </div>
-            <div class="stat-item">
-                <h3><span class="counter" data-target="100">0</span>M+</h3>
-                <p>Total Deal Value</p>
-            </div>
-            <div class="stat-item">
-                <h3><span class="counter" data-target="20">0</span>%</h3>
-                <p>Avg. Annual ROI</p>
-            </div>
-            <div class="stat-item">
-                <h3 class="counter" data-target="15">0</h3>
-                <p>Developer Partners</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Partners Section -->
-    <section class="partners-section text-center">
-        <div class="container">
-            <p class="partners-label">OFFICIAL PARTNER WITH DUBAI'S LEADING DEVELOPERS</p>
-            <div class="partners-logos"
-                style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; align-items: center;">
-                <img src="assets/logo-emaar.svg" alt="Emaar" style="height: 60px; opacity: 0.8; transition: 0.3s;"
-                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-                <img src="assets/logo-damac.svg" alt="Damac" style="height: 55px; opacity: 0.8; transition: 0.3s;"
-                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-                <img src="assets/logo-sobha.svg" alt="Sobha" style="height: 70px; opacity: 0.8; transition: 0.3s;"
-                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-                <img src="assets/logo-nakheel.svg" alt="Nakheel" style="height: 45px; opacity: 0.8; transition: 0.3s;"
-                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-                <img src="assets/logo-meraas.svg" alt="Meraas" style="height: 70px; opacity: 0.8; transition: 0.3s;"
-                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Off-Plan Section -->
-    <section id="why-off-plan" class="features section-padding">
-        <div class="container">
-            <div class="section-header text-center">
-                <h2 class="section-title">Why Invest <span class="gold-text">Off-Plan?</span></h2>
-                <div class="separator"></div>
-                <p class="section-desc">The smartest way to build wealth in real estate today.</p>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-chart-line"></i>
-                    </div>
-                    <h3>Capital Appreciation</h3>
-                    <p>Buy at today's prices and sell at tomorrow's value. Lock in equity before the building is even
-                        finished.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-percent"></i>
-                    </div>
-                    <h3>Flexible Payment Plans</h3>
-                    <p>Pay as low as 1% per month. Manage your cash flow efficiently while securing a premium asset.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-gem"></i>
-                    </div>
-                    <h3>Brand New Luxury</h3>
-                    <p>Be the first owner. Enjoy state-of-the-art amenities, modern design, and zero maintenance issues.
-                    </p>
+    <main>
+        <!-- 1 — Hero -->
+        <section class="hero" id="top" data-section>
+            <div class="hero-inner">
+                <p class="eyebrow reveal">Dubai · Off-plan · Zero fees</p>
+                <h1 class="hero-title">
+                    <span class="line"><span>Wealth grows</span></span>
+                    <span class="line"><span>in <em>spirals.</em></span></span>
+                </h1>
+                <p class="hero-sub reveal">Direct developer prices on Dubai's best off-plan projects — and an
+                    Investor Time Machine that shows every dirham, year by year, before you commit.</p>
+                <div class="hero-cta reveal">
+                    <a href="#time-machine" class="btn btn-gold">Enter the Time Machine <i
+                            class="fa-solid fa-arrow-right"></i></a>
+                    <a href="#collections" class="btn btn-ghost">View collections</a>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Comparison Table -->
-    <section id="comparison" class="section-padding" style="background: #0f121d;">
-        <div class="container">
-            <div class="section-header text-center">
-                <h2 class="section-title">Off-Plan vs. <span class="gold-text">Ready Property</span></h2>
-                <div class="separator"></div>
+            <div class="hero-foot">
+                <span class="phi">φ = 1.618…</span>
+                <span class="scroll-hint"><i></i>Scroll to descend</span>
             </div>
-            <div class="comparison-table-wrapper">
-                <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th>Feature</th>
-                            <th class="highlight">Off-Plan (Smart Choice)</th>
-                            <th>Ready Property</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Price</strong></td>
-                            <td class="highlight">Lower (Below Market Value)</td>
-                            <td>Higher (Market Value)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Payment Plan</strong></td>
-                            <td class="highlight">Spread over 3-5 Years</td>
-                            <td>100% Upfront + Mortgage</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Appreciation</strong></td>
-                            <td class="highlight">High (Gain during construction)</td>
-                            <td>Standard Market Growth</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Choices</strong></td>
-                            <td class="highlight">Pick Best Units First</td>
-                            <td>Limited to Available Listings</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Condition</strong></td>
-                            <td class="highlight">Brand New, Warranty</td>
-                            <td>Used, Maintenance Needed</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Why Work With Me Section -->
-    <section class="features section-padding" style="background-color: #0e111d;">
-        <div class="container">
-            <div class="section-header text-center">
-                <h2 class="section-title">The Broker <span class="gold-text">Advantage</span></h2>
-                <div class="separator"></div>
-
-                <!-- Personal Photo Integration -->
-                <div class="broker-profile">
-                    <div class="broker-img-container">
-                        <img src="assets/87fe5dd5-6e85-453e-8c4e-2b5b49247267.JPG" alt="Your Real Estate Partner"
-                            class="broker-photo">
+        <!-- 2 — The ratio -->
+        <section class="ratio section" id="ratio" data-section>
+            <div class="wrap ratio-grid">
+                <div class="ratio-copy">
+                    <p class="eyebrow"><span class="num">02</span> The ratio</p>
+                    <h2 class="h2">Every great investment is <em>a sequence.</em></h2>
+                    <p class="lead">1, 1, 2, 3, 5, 8, 13… Each step builds on the one before it. That is how
+                        off-plan wealth compounds: a small deposit secures today's price, installments follow the
+                        build, and the value keeps growing while you pay.</p>
+                    <div class="stats">
+                        <div class="stat"><b data-count="50">0</b><span>Investors served</span></div>
+                        <div class="stat"><b><span data-count="100">0</span>M+</b><span>Deal value, AED</span></div>
+                        <div class="stat"><b data-count="15">0</b><span>Developer partners</span></div>
+                        <div class="stat"><b data-count="47">0</b><span>Active developments</span></div>
                     </div>
-                    <p class="section-desc">Expert guidance at absolutely no cost to you.</p>
+                </div>
+                <div class="ratio-art" aria-hidden="true">
+                    <svg id="goldenRect" viewBox="0 0 610 377"></svg>
                 </div>
             </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-wallet"></i>
-                    </div>
-                    <h3>100% Free Service</h3>
-                    <p>My services are completely free for buyers. No commission, no hidden fees. You pay the exact same
-                        price as buying directly from the developer.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-handshake-simple"></i>
-                    </div>
-                    <h3>Unbiased Advice</h3>
-                    <p>Access to <strong>47 active developments</strong> across 15 developers. I compare the market for
-                        you,
-                        offering impartial advice tailored to <em>your</em> goals.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-layer-group"></i>
-                    </div>
-                    <h3>One-Stop Access</h3>
-                    <p>Skip the hassle of visiting multiple sales centers. Get comparisons, floor plans, and
-                        availability for every top project in one single meeting.</p>
+            <div class="wrap partners">
+                <p class="partners-label">Direct access to Dubai's leading developers</p>
+                <div class="partners-row">
+                    <img src="assets/logo-emaar.svg" alt="Emaar">
+                    <img src="assets/logo-damac.svg" alt="Damac">
+                    <img src="assets/logo-sobha.svg" alt="Sobha">
+                    <img src="assets/logo-nakheel.svg" alt="Nakheel">
+                    <img src="assets/logo-meraas.svg" alt="Meraas">
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Payment Calculator Section -->
-    <section class="calculator-section section-padding">
-        <div class="container">
-            <div class="calculator-wrapper">
-                <div class="calc-content">
-                    <h2 class="section-title">Calculate Your <span class="gold-text">Investment</span></h2>
-                    <p class="section-desc" style="margin: 0 0 20px 0; text-align: left;">See how affordable luxury can
-                        be with interest-free developer payment plans. Estimate your monthly commitment.</p>
-                    <ul class="calc-benefits">
-                        <li><i class="fa-solid fa-check"></i> 0% Interest</li>
-                        <li><i class="fa-solid fa-check"></i> Flexible Down Payment</li>
-                        <li><i class="fa-solid fa-check"></i> Pay Directly to Developer</li>
+        <!-- 3 — Why off-plan -->
+        <section class="offplan section" id="off-plan" data-section>
+            <div class="wrap">
+                <p class="eyebrow"><span class="num">03</span> Why off-plan</p>
+                <h2 class="h2">Buy tomorrow's building <em>at today's price.</em></h2>
+                <div class="cards3">
+                    <article class="glass card">
+                        <span class="card-n">01</span>
+                        <h3>Capital appreciation</h3>
+                        <p>Lock in the launch price. The asset can gain value through construction — before you have
+                            paid for it in full.</p>
+                    </article>
+                    <article class="glass card">
+                        <span class="card-n">02</span>
+                        <h3>Interest-free plans</h3>
+                        <p>Pay in stages straight to the developer, often 10–20% upfront and the rest over the build
+                            and beyond. No bank, no interest.</p>
+                    </article>
+                    <article class="glass card">
+                        <span class="card-n">03</span>
+                        <h3>First owner, brand new</h3>
+                        <p>Choose the best units and views first. New build, developer warranty, modern amenities.</p>
+                    </article>
+                </div>
+                <div class="compare glass">
+                    <div class="compare-row compare-head"><span></span><span>Off-plan</span><span>Ready</span></div>
+                    <div class="compare-row"><span>Entry price</span><span>Launch price</span><span>Market
+                            price</span></div>
+                    <div class="compare-row"><span>Payment</span><span>Staged over 3–5 years</span><span>Upfront or
+                            mortgage</span></div>
+                    <div class="compare-row"><span>Growth window</span><span>During and after
+                            construction</span><span>After purchase</span></div>
+                    <div class="compare-row"><span>Unit choice</span><span>Pick first</span><span>What's
+                            left</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5 — Time Machine -->
+        <section class="tm section" id="time-machine" data-section>
+            <div class="wrap">
+                <div class="tm-head">
+                    <div>
+                        <p class="eyebrow"><span class="num">05</span> Investor Time Machine</p>
+                        <h2 class="h2">Travel to the year <em>you sell.</em></h2>
+                    </div>
+                    <p class="lead">Pick a project and a payment plan, then drag through time. See what you've paid,
+                        what it's worth, the rent you've collected and your annual return — in any year.</p>
+                </div>
+
+                <div class="tm-grid">
+                    <!-- Controls -->
+                    <form class="tm-controls glass" id="tmForm" onsubmit="return false">
+                        <div class="field">
+                            <label for="tmProject">Project</label>
+                            <div class="select">
+                                <select id="tmProject"></select>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="field-top">
+                                <label for="tmPrice">Property price</label>
+                                <div class="seg seg-sm" role="radiogroup" aria-label="Currency">
+                                    <button type="button" class="on" data-cur="AED" role="radio"
+                                        aria-checked="true">AED</button>
+                                    <button type="button" data-cur="USD" role="radio"
+                                        aria-checked="false">USD</button>
+                                </div>
+                            </div>
+                            <output class="big-out" id="tmPriceOut">AED 0</output>
+                            <input type="range" id="tmPrice" min="500000" max="20000000" step="50000">
+                        </div>
+
+                        <div class="field">
+                            <label>Payment plan</label>
+                            <div class="seg seg-plan" id="tmPlan" role="radiogroup" aria-label="Payment plan">
+                                <button type="button" data-plan="60/40" class="on" role="radio"
+                                    aria-checked="true"><b>60/40</b><small>20% down</small></button>
+                                <button type="button" data-plan="70/30" role="radio"
+                                    aria-checked="false"><b>70/30</b><small>10% down</small></button>
+                                <button type="button" data-plan="post" role="radio"
+                                    aria-checked="false"><b>Post-handover</b><small>50% after keys</small></button>
+                                <button type="button" data-plan="ready" role="radio"
+                                    aria-checked="false"><b>Ready</b><small>100% now</small></button>
+                            </div>
+                        </div>
+
+                        <div class="field" id="handoverField">
+                            <div class="field-top">
+                                <label for="tmHandover">Handover in</label>
+                                <output id="tmHandoverOut">3 years</output>
+                            </div>
+                            <input type="range" id="tmHandover" min="1" max="5" step="0.5" value="3">
+                        </div>
+
+                        <details class="assume">
+                            <summary>Adjust assumptions <i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="field">
+                                <div class="field-top"><label for="aBuild">Growth during construction</label><output
+                                        id="aBuildOut"></output></div>
+                                <input type="range" id="aBuild" min="0" max="15" step="0.5" value="7">
+                            </div>
+                            <div class="field">
+                                <div class="field-top"><label for="aAfter">Growth after handover</label><output
+                                        id="aAfterOut"></output></div>
+                                <input type="range" id="aAfter" min="0" max="12" step="0.5" value="5">
+                            </div>
+                            <div class="field">
+                                <div class="field-top"><label for="aYield">Gross rental yield</label><output
+                                        id="aYieldOut"></output></div>
+                                <input type="range" id="aYield" min="0" max="12" step="0.25" value="7">
+                            </div>
+                            <div class="field">
+                                <div class="field-top"><label for="aCosts">Service charges &amp; management, % of
+                                        rent</label><output id="aCostsOut"></output></div>
+                                <input type="range" id="aCosts" min="0" max="50" step="1" value="25">
+                            </div>
+                            <p class="fine">Includes 4% Dubai Land Department fee at purchase and 2% selling costs at
+                                exit.</p>
+                        </details>
+                    </form>
+
+                    <!-- Output -->
+                    <div class="tm-out glass">
+                        <div class="dial">
+                            <div class="dial-label">Travel to</div>
+                            <div class="dial-year" id="tmYear" aria-live="polite">2031</div>
+                            <input type="range" id="tmT" min="1" max="15" step="1" value="5"
+                                aria-label="Years from today">
+                            <div class="dial-scale" id="tmScale"></div>
+                        </div>
+
+                        <div class="metrics">
+                            <div class="metric"><span>Property value</span><b id="mValue">—</b></div>
+                            <div class="metric"><span>Cash you've put in</span><b id="mPaid">—</b></div>
+                            <div class="metric"><span>Net rent collected</span><b id="mRent">—</b></div>
+                            <div class="metric"><span>Your equity</span><b id="mEquity">—</b></div>
+                            <div class="metric hl"><span>Profit if you sell</span><b id="mProfit">—</b></div>
+                            <div class="metric hl"><span>Annual return (IRR)</span><b id="mIrr">—</b></div>
+                        </div>
+
+                        <div class="chart-wrap">
+                            <svg id="tmChart" viewBox="0 0 640 260" preserveAspectRatio="none"
+                                aria-label="Value, cash invested and total wealth over time"></svg>
+                            <div class="legend">
+                                <span><i class="lg-value"></i>Property value</span>
+                                <span><i class="lg-wealth"></i>Equity + rent</span>
+                                <span><i class="lg-paid"></i>Cash invested</span>
+                                <span><i class="lg-gv"></i>Golden Visa AED 2M</span>
+                            </div>
+                        </div>
+
+                        <div class="badges">
+                            <div class="badge-gv" id="tmGv"></div>
+                            <div class="badge-hand" id="tmHandNote"></div>
+                        </div>
+
+                        <div class="schedule" id="tmSchedule"></div>
+
+                        <div class="tm-cta">
+                            <a class="btn btn-gold" id="tmWhatsapp" href="https://wa.me/971544777337"
+                                target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Discuss this plan
+                                on WhatsApp</a>
+                            <button class="btn btn-ghost open-modal" id="tmEmail" data-source="time-machine">Email me
+                                the full breakdown</button>
+                        </div>
+                        <p class="fine">Illustrative projection based on the assumptions above — not financial advice
+                            or a guarantee of returns. Prices, payment plans and Golden Visa rules are set by developers
+                            and UAE authorities and can change.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8 — Collections -->
+        <section class="collections" id="collections" data-section>
+            <div class="wrap coll-head">
+                <p class="eyebrow"><span class="num">08</span> Curated collections</p>
+                <h2 class="h2">Eight projects. <em>One sequence.</em></h2>
+            </div>
+            <div class="coll-track-outer">
+                <div class="coll-track" id="collTrack"></div>
+            </div>
+        </section>
+
+        <!-- 13 — Broker -->
+        <section class="broker section" id="broker" data-section>
+            <div class="wrap broker-grid">
+                <figure class="broker-photo">
+                    <img src="assets/broker.jpg" alt="Your Fibonacci Estates advisor" loading="lazy">
+                    <svg class="broker-arc" viewBox="0 0 100 100" aria-hidden="true">
+                        <path
+                            d="M50 50a2 2 0 0 1 2 2 3 3 0 0 1-3 3 5 5 0 0 1-5-5 8 8 0 0 1 8-8 13 13 0 0 1 13 13 21 21 0 0 1-21 21 34 34 0 0 1-34-34" />
+                    </svg>
+                </figure>
+                <div>
+                    <p class="eyebrow"><span class="num">13</span> Your advisor</p>
+                    <h2 class="h2">Expert guidance, <em>at zero cost to you.</em></h2>
+                    <ul class="adv">
+                        <li><b>100% free for buyers.</b> You pay exactly the developer's price — the developer pays
+                            the commission.</li>
+                        <li><b>Unbiased comparison.</b> 47 active developments across 15 developers, compared against
+                            your goals, not a sales quota.</li>
+                        <li><b>One meeting, every project.</b> Floor plans, availability and payment plans side by
+                            side — no tour of sales centres.</li>
                     </ul>
-                </div>
-                <div class="calc-card">
-                    <div class="currency-toggle-wrapper" style="text-align: right; margin-bottom: 10px;">
-                        <span
-                            style="color: var(--text-secondary); font-size: 0.9rem; margin-right: 10px;">Currency:</span>
-                        <div class="toggle-switch">
-                            <input type="radio" id="aed" name="currency" value="AED" checked>
-                            <label for="aed">AED</label>
-                            <input type="radio" id="usd" name="currency" value="USD">
-                            <label for="usd">USD</label>
-                        </div>
-                    </div>
-                    <h3>Payment Estimator</h3>
-                    <div class="form-group">
-                        <label id="priceLabel">Property Price (AED)</label>
-                        <input type="number" id="calcPrice" value="1500000">
-                    </div>
-                    <div class="form-group">
-                        <label>Down Payment (%)</label>
-                        <input type="range" id="calcDownPayment" min="10" max="50" value="20" step="5">
-                        <div class="range-value"><span id="downPaymentValue">20</span>%</div>
-                    </div>
-                    <div class="form-group">
-                        <label>Payment Duration (Years)</label>
-                        <input type="range" id="calcYears" min="1" max="7" value="5" step="1">
-                        <div class="range-value"><span id="yearsValue">5</span> Years</div>
-                    </div>
-                    <div class="calc-result">
-                        <p>Estimated Monthly Payment</p>
-                        <h2 id="monthlyResult">AED 20,000</h2>
+                    <div class="quotes" id="quotes">
+                        <blockquote class="quote on">
+                            <p>“I was hesitant about off-plan, but the ROI analysis was spot on. My Emaar property
+                                appreciated 15% before handover.”</p>
+                            <cite>Ahmed S. · Investor, 3 units</cite>
+                        </blockquote>
+                        <blockquote class="quote">
+                            <p>“The zero-commission model is genuine. I got the exact developer price and a full payment
+                                breakdown that made the decision easy.”</p>
+                            <cite>Sarah J. · First-time buyer</cite>
+                        </blockquote>
+                        <blockquote class="quote">
+                            <p>“Access to pre-launch inventory changed the game. I secured a view that sold out to the
+                                public the next day.”</p>
+                            <cite>Marcus D. · International investor</cite>
+                        </blockquote>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Project Showcase -->
-    <section id="projects" class="projects section-padding">
-        <div class="container">
-            <div class="section-header text-center">
-                <h2 class="section-title">Curated <span class="gold-text">Collections</span></h2>
-                <div class="separator"></div>
-            </div>
-
-            <div class="projects-grid">
-                <!-- Project 1 -->
-                <div class="project-card">
-                    <div class="project-img-wrapper">
-                        <img src="assets/project-1.png" alt="Waterfront Villa">
-                        <div class="overlay">
-                            <button class="btn-outline open-modal" data-project="Azure Coast Villas">Request
-                                Brochure</button>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <span class="badge">Selling Fast</span>
-                        <h3>Azure Coast Villas</h3>
-                        <p class="location"><i class="fa-solid fa-location-dot"></i> Palm Jumeirah</p>
-                        <ul class="specs">
-                            <li><i class="fa-solid fa-bed"></i> 4-6 Beds</li>
-                            <li><i class="fa-solid fa-ruler-combined"></i> 5,000 sqft+</li>
-                        </ul>
-                        <div class="price">From <strong>$2.5M</strong></div>
-                    </div>
-                </div>
-
-                <!-- Project 2 -->
-                <div class="project-card">
-                    <div class="project-img-wrapper">
-                        <img src="assets/project-2.png" alt="Skyline Penthouse">
-                        <div class="overlay">
-                            <button class="btn-outline open-modal" data-project="The Celestial Heights">Request
-                                Brochure</button>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <span class="badge new">Just Launched</span>
-                        <h3>The Celestial Heights</h3>
-                        <p class="location"><i class="fa-solid fa-location-dot"></i> Downtown</p>
-                        <ul class="specs">
-                            <li><i class="fa-solid fa-bed"></i> 2-4 Beds</li>
-                            <li><i class="fa-solid fa-ruler-combined"></i> 1,800 sqft+</li>
-                        </ul>
-                        <div class="price">From <strong>$1.2M</strong></div>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="project-card">
-                    <div class="project-img-wrapper">
-                        <img src="assets/project-3.png" alt="Green Community">
-                        <div class="overlay">
-                            <button class="btn-outline open-modal" data-project="Eden Reserves">Request
-                                Brochure</button>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <span class="badge">Best ROI</span>
-                        <h3>Eden Reserves</h3>
-                        <p class="location"><i class="fa-solid fa-location-dot"></i> Dubai Hills</p>
-                        <ul class="specs">
-                            <li><i class="fa-solid fa-bed"></i> 3-5 Beds</li>
-                            <li><i class="fa-solid fa-ruler-combined"></i> 2,500 sqft+</li>
-                        </ul>
-                        <div class="price">From <strong>$950K</strong></div>
-                    </div>
-                </div>
-
-                <!-- Project 4 (New) -->
-                <div class="project-card">
-                    <div class="project-img-wrapper">
-                        <img src="assets/project-4.png" alt="Downtown Skyscraper">
-                        <div class="overlay">
-                            <button class="btn-outline open-modal" data-project="The Burj Crown">Request
-                                Brochure</button>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <span class="badge new">Iconic View</span>
-                        <h3>The Burj Crown</h3>
-                        <p class="location"><i class="fa-solid fa-location-dot"></i> Downtown Dubai</p>
-                        <ul class="specs">
-                            <li><i class="fa-solid fa-bed"></i> 2-3 Beds</li>
-                            <li><i class="fa-solid fa-ruler-combined"></i> 1,500 sqft+</li>
-                        </ul>
-                        <div class="price">From <strong>$1.8M</strong></div>
-                    </div>
-                </div>
-
-                <!-- Project 5 (New) -->
-                <div class="project-card">
-                    <div class="project-img-wrapper">
-                        <img src="assets/project-5.png" alt="Townhouse Community">
-                        <div class="overlay">
-                            <button class="btn-outline open-modal" data-project="Maple Townhouses">Request
-                                Brochure</button>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <span class="badge">Family Friendly</span>
-                        <h3>Maple Townhouses</h3>
-                        <p class="location"><i class="fa-solid fa-location-dot"></i> Dubai Hills</p>
-                        <ul class="specs">
-                            <li><i class="fa-solid fa-bed"></i> 3-4 Beds</li>
-                            <li><i class="fa-solid fa-ruler-combined"></i> 2,200 sqft+</li>
-                        </ul>
-                        <div class="price">From <strong>$850K</strong></div>
-                    </div>
-                </div>
-
-                <!-- Project 6 (New) -->
-                <div class="project-card">
-                    <div class="project-img-wrapper">
-                        <img src="assets/project-1.png" alt="Palm Mansion">
-                        <div class="overlay">
-                            <button class="btn-outline open-modal" data-project="The Palm Royale">Request
-                                Brochure</button>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <span class="badge">Ultra Luxury</span>
-                        <h3>The Palm Royale</h3>
-                        <p class="location"><i class="fa-solid fa-location-dot"></i> Palm Jebel Ali</p>
-                        <ul class="specs">
-                            <li><i class="fa-solid fa-bed"></i> 6-8 Beds</li>
-                            <li><i class="fa-solid fa-ruler-combined"></i> 8,000 sqft+</li>
-                        </ul>
-                        <div class="price">From <strong>$4.2M</strong></div>
-                    </div>
-                </div>
-
-                <!-- Project 7 (New) -->
-                <div class="project-card">
-                    <div class="project-img-wrapper">
-                        <img src="assets/project-2.png" alt="Jumeirah Apartments">
-                        <div class="overlay">
-                            <button class="btn-outline open-modal" data-project="Jumeirah Pearl">Request
-                                Brochure</button>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <span class="badge">Exclusive</span>
-                        <h3>Jumeirah Pearl</h3>
-                        <p class="location"><i class="fa-solid fa-location-dot"></i> Jumeirah</p>
-                        <ul class="specs">
-                            <li><i class="fa-solid fa-bed"></i> 1-3 Beds</li>
-                            <li><i class="fa-solid fa-ruler-combined"></i> 1,100 sqft+</li>
-                        </ul>
-                        <div class="price">From <strong>$2.1M</strong></div>
-                    </div>
-                </div>
-
-                <!-- Project 8 (New) -->
-                <div class="project-card">
-                    <div class="project-img-wrapper">
-                        <img src="assets/project-3.png" alt="Creek Harbour">
-                        <div class="overlay">
-                            <button class="btn-outline open-modal" data-project="Creek Harbour Views">Request
-                                Brochure</button>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <span class="badge new">Smart City</span>
-                        <h3>Creek Harbour Views</h3>
-                        <p class="location"><i class="fa-solid fa-location-dot"></i> Dubai Creek</p>
-                        <ul class="specs">
-                            <li><i class="fa-solid fa-bed"></i> 2-4 Beds</li>
-                            <li><i class="fa-solid fa-ruler-combined"></i> 1,600 sqft+</li>
-                        </ul>
-                        <div class="price">From <strong>$1.1M</strong></div>
-                    </div>
+        <!-- 21 — Begin -->
+        <section class="begin section" id="begin" data-section>
+            <div class="wrap begin-inner">
+                <p class="eyebrow"><span class="num">21</span> Begin</p>
+                <h2 class="h1">The next number <em>is yours.</em></h2>
+                <p class="lead">Get the 2026 Insider's Guide to Dubai off-plan, or message us for a shortlist built
+                    around your budget.</p>
+                <div class="hero-cta">
+                    <button class="btn btn-gold open-modal">Get the free guide</button>
+                    <a class="btn btn-ghost" href="https://wa.me/971544777337" target="_blank" rel="noopener"><i
+                            class="fa-brands fa-whatsapp"></i> WhatsApp</a>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials section-padding">
-        <div class="container">
-            <div class="section-header text-center">
-                <h2 class="section-title">Client <span class="gold-text">Stories</span></h2>
-                <div class="separator"></div>
-                <p class="section-desc">Real results from real investors.</p>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
-                    <p class="quote-text">"I was hesitant about off-plan, but the ROI analysis provided was spot on. My
-                        Emaar property has already appreciated 15% before handover."</p>
-                    <div class="client-info">
-                        <h4>Ahmed S.</h4>
-                        <p class="client-type">Investor, Bought 3 Units</p>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
-                    <p class="quote-text">"The zero-commission model is genuine. I got the exact developer price and a
-                        full payment plan breakdown that made the decision easy."</p>
-                    <div class="client-info">
-                        <h4>Sarah J.</h4>
-                        <p class="client-type">First-Time Buyer</p>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
-                    <p class="quote-text">"Access to pre-launch inventory changed the game for me. I secured a unit with
-                        a view that was sold out to the public the next day."</p>
-                    <div class="client-info">
-                        <h4>Marcus D.</h4>
-                        <p class="client-type">International Investor</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section class="cta-banner">
-        <div class="container text-center">
-            <h2>Ready to Start Your Investment Journey?</h2>
-            <p>Get a personalized consultation and receiving a shortlist of the best off-plan opportunities.</p>
-            <button class="btn-primary open-modal">Get Free Guide</button>
-        </div>
-    </section>
-
-    <!-- Lead Capture Modal -->
-    <div id="leadModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <h3>Unlock Exclusive Access</h3>
-                <p>Enter your details to download the brochure and view floor plans.</p>
-            </div>
-            <form id="leadForm">
-                <!-- Step 1 -->
-                <div class="form-step" id="step1">
-                    <div class="form-group">
-                        <label for="phone">Phone Number (with Country Code)</label>
-                        <input type="tel" id="phone" name="Phone" placeholder="+1 234 567 8900">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="Email" placeholder="john@example.com">
-                    </div>
-                    <button type="button" id="btnNextStep" class="btn-primary full-width">Next <i
-                            class="fa-solid fa-arrow-right"></i></button>
-                    <!-- Error Message Container -->
-                    <p id="step1Error" style="color: #ff6b6b; font-size: 0.8rem; margin-top: 10px; display: none;">
-                        Please fill in all fields.</p>
-                </div>
-
-                <!-- Step 2 -->
-                <div class="form-step" id="step2" style="display: none;">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="Name" placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label for="intent">I am interested in...</label>
-                        <select id="intent" name="Intent">
-                            <option value="Investment">Investment (ROI)</option>
-                            <option value="Personal Use">Personal Home</option>
-                            <option value="Just Browsing">Just Browsing</option>
-                        </select>
-                    </div>
-                    <div class="form-buttons" style="display: flex; gap: 10px;">
-                        <button type="button" id="backBtn" class="btn-secondary" style="flex: 1;">Back</button>
-                        <button type="submit" id="btnSubmit" class="btn-primary" style="flex: 2;">Get
-                            Information</button>
-                    </div>
-                </div>
-
-                <!-- Step 3 (Success & Backup Link) -->
-                <div class="form-step" id="step3" style="display: none; text-align: center; padding: 20px 0;">
-                    <div style="font-size: 3rem; color: #28a745; margin-bottom: 20px;"><i
-                            class="fa-solid fa-circle-check"></i></div>
-                    <h3 style="margin-bottom: 10px;">Success!</h3>
-                    <p style="color: var(--text-secondary); margin-bottom: 20px;">Your guide is opening in a new tab.
-                    </p>
-                    <p style="font-size: 0.9rem; margin-bottom: 15px;">Pop-up blocked? Click below:</p>
-                    <a href="Insider_Guide/Guide.pdf" target="_blank" class="btn-primary full-width"
-                        style="display: block; text-align: center; line-height: 1.6; font-size: 1.2rem; padding: 15px;">
-                        Open Your Guide Now <i class="fa-solid fa-file-pdf"></i>
-                    </a>
-                </div>
-
-                <input type="hidden" id="projectInterest" name="Project" value="General">
-            </form>
-            <p class="privacy-note"><i class="fa-solid fa-lock"></i> Your information is secure. No spam.</p>
-        </div>
-    </div>
-
-    <!-- WhatsApp Float -->
-    <a href="https://wa.me/971544777337" class="whatsapp-float" target="_blank">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+        </section>
+    </main>
 
     <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-brand">
-                <h2>Fibonacci Estates.</h2>
-                <p>Your trusted partner for off-plan real estate investments.</p>
-            </div>
-            <div class="footer-contact">
-                <h3>Contact</h3>
-                <p><i class="fas fa-phone"></i> +971 54 477 7337</p>
-                <p><i class="fas fa-envelope"></i> <span class="email-encoded">abror.husanov@fibestates.com</span></p>
-            </div>
-            <div class="footer-social">
-                <h3>Socials</h3>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <div class="wrap footer-grid">
+            <div>
+                <div class="brand brand-foot">
+                    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+                        <path
+                            d="M32 32a3 3 0 0 1 3 3 5 5 0 0 1-5 5 8 8 0 0 1-8-8 13 13 0 0 1 13-13 21 21 0 0 1 21 21" />
+                    </svg>
+                    <span>Fibonacci <em>Estates</em></span>
                 </div>
+                <p class="muted">Off-plan real estate advisory, Dubai.</p>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p><a href="tel:+971544777337">+971 54 477 7337</a></p>
+                <p><a class="email-encoded" href="#">email</a></p>
+            </div>
+            <div>
+                <h4>Explore</h4>
+                <p><a href="#time-machine">Time Machine</a></p>
+                <p><a href="#collections">Collections</a></p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Fibonacci Estates. All rights reserved.</p>
-        </div>
+        <p class="wrap copy">© <span id="yr">2026</span> Fibonacci Estates. All rights reserved.</p>
     </footer>
 
-    <!-- Mobile Sticky CTA -->
-    <div class="mobile-sticky-bar">
-        <a href="https://wa.me/971544777337" target="_blank" class="sticky-btn whatsapp-btn">
-            <i class="fa-brands fa-whatsapp"></i> WhatsApp
-        </a>
-        <a href="#" class="sticky-btn call-btn open-modal">
-            <i class="fa-solid fa-download"></i> Get Guide
-        </a>
+    <!-- Lead modal -->
+    <div class="modal" id="leadModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+        <div class="modal-card glass">
+            <button class="modal-x" aria-label="Close">&times;</button>
+            <h3 id="modalTitle">Download the 2026 Insider's Guide</h3>
+            <p class="muted" id="modalSub">Enter your details for instant access.</p>
+            <form id="leadForm" novalidate>
+                <div class="step" id="step1">
+                    <div class="field"><label for="phone">Phone (with country code)</label><input type="tel"
+                            id="phone" placeholder="+971 50 000 0000" autocomplete="tel"></div>
+                    <div class="field"><label for="email">Email</label><input type="email" id="email"
+                            placeholder="you@example.com" autocomplete="email"></div>
+                    <button type="button" class="btn btn-gold full" id="btnNext">Next <i
+                            class="fa-solid fa-arrow-right"></i></button>
+                    <p class="err" id="step1Error" hidden></p>
+                </div>
+                <div class="step" id="step2" hidden>
+                    <div class="field"><label for="name">Full name</label><input type="text" id="name"
+                            autocomplete="name"></div>
+                    <div class="field"><label for="intent">I'm interested in</label>
+                        <div class="select"><select id="intent">
+                                <option value="Investment">Investment (ROI)</option>
+                                <option value="Personal Use">A home for myself</option>
+                                <option value="Just Browsing">Just browsing</option>
+                            </select></div>
+                    </div>
+                    <div class="row2">
+                        <button type="button" class="btn btn-ghost" id="btnBack">Back</button>
+                        <button type="submit" class="btn btn-gold" id="btnSubmit">Get information</button>
+                    </div>
+                </div>
+                <div class="step done" id="step3" hidden>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <h4>Thank you!</h4>
+                    <p class="muted">Your guide is opening in a new tab. We'll be in touch shortly.</p>
+                    <a href="Insider_Guide/Guide.pdf" target="_blank" class="btn btn-gold full">Open your guide <i
+                            class="fa-solid fa-file-pdf"></i></a>
+                </div>
+                <input type="hidden" id="projectInterest" value="General">
+                <input type="hidden" id="calcSummary" value="">
+            </form>
+            <p class="fine"><i class="fa-solid fa-lock"></i> Your information is secure. No spam.</p>
+        </div>
     </div>
 
-    <script src="app.js?v=3"></script>
+    <a href="https://wa.me/971544777337" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp"><i
+            class="fa-brands fa-whatsapp"></i></a>
+    <div class="mobile-bar">
+        <a href="https://wa.me/971544777337" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i>
+            WhatsApp</a>
+        <a href="#time-machine" class="gold"><i class="fa-solid fa-hourglass-half"></i> Time Machine</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="js/data.js?v=4"></script>
+    <script src="js/time-machine.js?v=4"></script>
+    <script src="js/app.js?v=4"></script>
+    <script type="module" src="js/spiral.js?v=4"></script>
 </body>
 
 </html>

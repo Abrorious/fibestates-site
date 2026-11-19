@@ -1,0 +1,7 @@
+# Private / not part of the website
+Insider_Guide/*
+!Insider_Guide/Guide.pdf
+archive/
+.claude/
+.DS_Store
+assets/test-emaar.png

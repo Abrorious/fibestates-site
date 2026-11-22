@@ -2,6 +2,7 @@
 (function () {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const hasGsap = !!(window.gsap && window.ScrollTrigger);
+    const touch = matchMedia('(pointer: coarse)').matches;
     const $ = (s, r = document) => r.querySelector(s);
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
@@ -14,7 +15,7 @@
 
     // ---------- smooth scroll ----------
     let lenis = null;
-    if (window.Lenis && !reduce) {
+    if (window.Lenis && !reduce && !touch) { // phones keep native, momentum scrolling
         lenis = new Lenis({ duration: 1.15, smoothWheel: true });
         if (hasGsap) {
             lenis.on('scroll', ScrollTrigger.update);
@@ -42,10 +43,22 @@
 
     // ---------- nav ----------
     const nav = $('#nav'), toggle = $('#navToggle'), links = $('#navLinks');
-    function closeMenu() { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); }
+    function lockScroll(on) {
+        document.documentElement.classList.toggle('lock', on);
+        if (lenis) on ? lenis.stop() : lenis.start();
+    }
+    function closeMenu() {
+        if (!nav.classList.contains('open')) return;
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
+        lockScroll(false);
+    }
     toggle.addEventListener('click', () => {
         const open = nav.classList.toggle('open');
         toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        lockScroll(open);
     });
     const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
     window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
@@ -131,8 +144,18 @@
             window.FibScrollTo('#time-machine');
         });
 
+        const outerEl = $('.coll-track-outer'), bar = $('#collBar');
+        const syncBar = () => {
+            const max = outerEl.scrollWidth - outerEl.clientWidth;
+            const seen = outerEl.clientWidth / Math.max(outerEl.scrollWidth, 1);
+            bar.style.width = (seen * 100) + '%';
+            bar.style.transform = `translateX(${max > 0 ? (outerEl.scrollLeft / max) * ((1 - seen) / seen) * 100 : 0}%)`;
+        };
+        outerEl.addEventListener('scroll', syncBar, { passive: true });
+        window.addEventListener('resize', syncBar); syncBar();
+
         if (hasGsap && !reduce) {
-            gsap.matchMedia().add('(min-width: 900px)', () => {
+            gsap.matchMedia().add('(min-width: 901px)', () => {
                 const outer = $('.coll-track-outer');
                 const dist = () => Math.max(0, track.scrollWidth - outer.clientWidth);
                 gsap.to(track, {
@@ -149,9 +172,20 @@
         gsap.from('.hero .reveal', { y: 24, opacity: 0, duration: 1.1, ease: 'power3.out', stagger: 0.1, delay: 0.55 });
         gsap.to('.hero-inner', { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
         $$('.section .eyebrow, .section .h2, .section .h1, .section .lead, .card, .compare, .adv li, .stat, .broker-photo').forEach(n => {
-            gsap.from(n, { y: 40, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: n, start: 'top 88%' } });
+            gsap.from(n, { y: touch ? 18 : 40, opacity: 0, duration: touch ? .6 : 1, ease: 'power3.out', scrollTrigger: { trigger: n, start: 'top 88%' } });
         });
     }
+
+    // ---------- Time Machine: live results bar while adjusting controls on small screens ----------
+    (function miniBar() {
+        const mini = $('#tmMini'), controls = $('.tm-controls'), results = $('.metrics');
+        if (!mini || !controls || !results) return;
+        let inControls = false, inResults = false;
+        const sync = () => mini.classList.toggle('show', inControls && !inResults);
+        new IntersectionObserver(([e]) => { inControls = e.isIntersecting; sync(); }, { rootMargin: '-80px 0px -120px 0px' }).observe(controls);
+        new IntersectionObserver(([e]) => { inResults = e.isIntersecting; sync(); }, { threshold: 0.15 }).observe(results);
+        mini.addEventListener('click', () => window.FibScrollTo('.tm-out'));
+    })();
 
     // ---------- counters ----------
     $$('[data-count]').forEach(n => {
@@ -197,12 +231,12 @@
         summaryInput.value = (btn && btn.dataset.summary) || '';
         modal.hidden = false;
         requestAnimationFrame(() => modal.classList.add('show'));
-        lenis && lenis.stop();
-        setTimeout(() => $('#phone').focus(), 250);
+        lockScroll(true);
+        if (!touch) setTimeout(() => $('#phone').focus(), 250); // don't pop the phone keyboard over the form
     }
     function closeModal() {
         modal.classList.remove('show');
-        lenis && lenis.start();
+        lockScroll(false);
         setTimeout(() => {
             modal.hidden = true;
             $('#leadForm').reset();
@@ -215,7 +249,7 @@
     });
     $('.modal-x').addEventListener('click', closeModal);
     modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; if (!modal.hidden) closeModal(); closeMenu(); });
 
     $('#btnNext').addEventListener('click', () => {
         const phone = $('#phone'), email = $('#email');
@@ -226,7 +260,7 @@
             err.textContent = !pv || !ev ? 'Please fill in both fields.' : !okE ? 'Please enter a valid email.' : 'Please enter a valid phone number.';
             err.hidden = false; return;
         }
-        err.hidden = true; showStep(2); $('#name').focus();
+        err.hidden = true; showStep(2); if (!touch) $('#name').focus();
     });
     $('#btnBack').addEventListener('click', () => showStep(1));
 

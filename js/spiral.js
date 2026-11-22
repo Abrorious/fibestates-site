@@ -26,9 +26,9 @@ if (renderer) {
     scene.add(group);
 
     // ---- phyllotaxis points ----
-    const N = mobile ? 4200 : 9000;
+    const N = mobile ? 2600 : 9000;
     const GA = Math.PI * (3 - Math.sqrt(5)); // golden angle
-    const C = 0.09, RMAX = C * Math.sqrt(N);
+    const RMAX = 8.54, C = RMAX / Math.sqrt(N);
     const pos = new Float32Array(N * 3), col = new Float32Array(N * 3), seed = new Float32Array(N), size = new Float32Array(N);
     const gold = new THREE.Color('#d9b46c'), pale = new THREE.Color('#fff1d0'), deep = new THREE.Color('#7a5a2a');
     const tmp = new THREE.Color();
@@ -99,8 +99,12 @@ if (renderer) {
     arms.forEach(a => group.add(a));
 
     // ---- resize ----
+    let lastW = 0, lastH = 0;
     function resize() {
-        const w = window.innerWidth, h = window.innerHeight;
+        const w = canvas.clientWidth || window.innerWidth, h = canvas.clientHeight || window.innerHeight;
+        // phone address bars change the height while scrolling: only react to real size changes
+        if (mobile && w === lastW && Math.abs(h - lastH) < 140) return;
+        lastW = w; lastH = h;
         renderer.setSize(w, h, false);
         camera.aspect = w / h;
         camera.fov = w < h ? 75 : 60;
@@ -117,7 +121,7 @@ if (renderer) {
     }, { passive: true });
 
     const tm = document.getElementById('time-machine');
-    let smooth = 0, last = performance.now(), running = true, t = 0;
+    let smooth = 0, last = performance.now(), lastDraw = 0, running = true, t = 0;
 
     document.addEventListener('visibilitychange', () => {
         running = !document.hidden;
@@ -126,6 +130,8 @@ if (renderer) {
 
     function frame(now) {
         if (!running) return;
+        if (mobile && now - lastDraw < 32) { requestAnimationFrame(frame); return; } // ~30fps saves battery
+        lastDraw = now;
         const dt = Math.min((now - last) / 1000, 0.05); last = now;
         t += dt;
         const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
@@ -144,13 +150,13 @@ if (renderer) {
         // on wide screens the disc sits to the right of the hero copy, then centres as you descend
         const wide = camera.aspect > 1.15;
         group.position.x = wide ? 5.2 * Math.max(0, 1 - smooth * 7) : 0;
-        group.position.y = wide ? 0 : 3.2 * Math.max(0, 1 - smooth * 7);
+        group.position.y = wide ? 0 : 4.6 * Math.max(0, 1 - smooth * 7);
         group.rotation.x = Math.sin(t * 0.1) * 0.04;
 
         // dim behind the Time Machine so numbers stay readable
         // full brightness in the hero, softer behind content, dimmest behind the Time Machine
         const vh = window.innerHeight;
-        let dim = 1 - Math.min(1, window.scrollY / (vh * 0.8)) * 0.5;
+        let dim = 1 - Math.min(1, window.scrollY / (vh * 0.8)) * (mobile ? 0.68 : 0.5);
         if (tm) {
             const r = tm.getBoundingClientRect();
             const overlap = Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0)) / vh;

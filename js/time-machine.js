@@ -172,6 +172,10 @@
         el.mIrr.textContent = res ? pct(res.irr) : '—';
 
         drawChart(M, T);
+        $('miniYear').textContent = START + T;
+        $('miniValue').textContent = money(r.value);
+        $('miniProfit').textContent = money(res ? res.profit : 0);
+        $('miniIrr').textContent = res ? pct(res.irr) : '—';
 
         // Golden Visa + handover badges
         if (r.value >= GV) {

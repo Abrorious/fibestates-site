@@ -18,7 +18,7 @@ if (renderer) {
     renderer.setClearColor(0x000000, 0);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x07080c, 0.045);
+    scene.fog = new THREE.FogExp2(0xfaf6ee, 0.045);
     const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
     camera.position.set(0, 0, 16);
 
@@ -30,7 +30,7 @@ if (renderer) {
     const GA = Math.PI * (3 - Math.sqrt(5)); // golden angle
     const RMAX = 8.54, C = RMAX / Math.sqrt(N);
     const pos = new Float32Array(N * 3), col = new Float32Array(N * 3), seed = new Float32Array(N), size = new Float32Array(N);
-    const gold = new THREE.Color('#d9b46c'), pale = new THREE.Color('#fff1d0'), deep = new THREE.Color('#7a5a2a');
+    const gold = new THREE.Color('#b5852f'), pale = new THREE.Color('#dcb765'), deep = new THREE.Color('#7b5719');
     const tmp = new THREE.Color();
     for (let i = 0; i < N; i++) {
         const r = C * Math.sqrt(i + 1), th = i * GA;
@@ -51,7 +51,7 @@ if (renderer) {
 
     const uniforms = { uTime: { value: 0 }, uDPR: { value: DPR }, uDim: { value: 1 } };
     const mat = new THREE.ShaderMaterial({
-        uniforms, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, vertexColors: true, fog: false,
+        uniforms, transparent: true, depthWrite: false, blending: THREE.NormalBlending, vertexColors: true, fog: false,
         vertexShader: `
             attribute float aSeed; attribute float aSize;
             uniform float uTime; uniform float uDPR;
@@ -63,7 +63,7 @@ if (renderer) {
                 vec4 mv = modelViewMatrix * vec4(p, 1.0);
                 vDepth = -mv.z;
                 vTw = 0.55 + 0.45 * sin(uTime * (0.8 + fract(aSeed) * 1.6) + aSeed);
-                gl_PointSize = min(aSize * uDPR * (72.0 / max(vDepth, 0.5)), 48.0 * uDPR);
+                gl_PointSize = min(aSize * uDPR * (72.0 / max(vDepth, 0.5)), 13.0 * uDPR);
                 gl_Position = projectionMatrix * mv;
             }`,
         fragmentShader: `
@@ -76,7 +76,7 @@ if (renderer) {
                 a *= a;
                 float fog = clamp(1.0 - (vDepth - 8.0) / 40.0, 0.18, 1.0);
                 float near = smoothstep(0.3, 2.5, vDepth);
-                gl_FragColor = vec4(vColor * (0.75 + vTw * 0.7), a * fog * near * uDim);
+                gl_FragColor = vec4(vColor * (0.92 + vTw * 0.16), a * fog * near * uDim * (0.45 + vTw * 0.4));
             }`
     });
     const points = new THREE.Points(geo, mat);
@@ -92,7 +92,7 @@ if (renderer) {
             pts.push(new THREE.Vector3(r * Math.cos(th + offset), r * Math.sin(th + offset), -Math.pow(Math.max(RMAX - r, 0), 1.35) * 0.55 + 0.02));
         }
         const g = new THREE.BufferGeometry().setFromPoints(pts);
-        const m = new THREE.LineBasicMaterial({ color: 0xe8c987, transparent: true, opacity, blending: THREE.AdditiveBlending, depthWrite: false });
+        const m = new THREE.LineBasicMaterial({ color: 0xa87a2a, transparent: true, opacity, blending: THREE.NormalBlending, depthWrite: false });
         return new THREE.Line(g, m);
     }
     const arms = [arm(0, 0.38), arm(Math.PI, 0.22)];

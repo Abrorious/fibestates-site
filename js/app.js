@@ -213,10 +213,28 @@
     const step1 = $('#step1'), step2 = $('#step2'), step3 = $('#step3');
     const err = $('#step1Error');
     const projectInput = $('#projectInterest'), summaryInput = $('#calcSummary');
-    function showStep(n) { [step1, step2, step3].forEach((s, i) => s.hidden = i !== n - 1); }
+    const guideBox = $('#guideBox');
+    let guideMode = false, guideSaved = false;
+    function showStep(n) {
+        [step1, step2, step3].forEach((s, i) => s.hidden = i !== n - 1);
+        guideBox.hidden = !guideMode || n === 3;
+    }
+    function trackGuide() {
+        guideSaved = true;
+        if (typeof gtag === 'function') gtag('event', 'file_download', { file_name: 'Guide.pdf' });
+    }
+    function downloadGuide() {
+        const a = document.createElement('a');
+        a.href = 'Insider_Guide/Guide.pdf';
+        a.download = 'Fibonacci-Estates-2026-Insider-Guide.pdf';
+        document.body.appendChild(a); a.click(); a.remove();
+        trackGuide();
+    }
+    $('#guideDownload').addEventListener('click', trackGuide);
     function openModal(btn) {
-        showStep(1); err.hidden = true;
         const project = btn && btn.dataset.project;
+        guideMode = !project; guideSaved = false;
+        showStep(1); err.hidden = true;
         if (project) {
             projectInput.value = project;
             $('#modalTitle').textContent = btn.dataset.source === 'time-machine' ? 'Get your full breakdown' : 'Request brochure';
@@ -225,8 +243,8 @@
                 : `Full details, floor plans and payment plan for ${project}.`;
         } else {
             projectInput.value = '2026 Insider Guide';
-            $('#modalTitle').textContent = 'Download the 2026 Insider\'s Guide';
-            $('#modalSub').textContent = 'Enter your details for instant access.';
+            $('#modalTitle').textContent = 'Your 2026 Insider\'s Guide';
+            $('#modalSub').textContent = 'How to buy Dubai off-plan: savings, payment plans, safety, hot spots and the Golden Visa.';
         }
         summaryInput.value = (btn && btn.dataset.summary) || '';
         modal.hidden = false;
@@ -278,7 +296,7 @@
         }).then(() => {
             if (typeof gtag === 'function') gtag('event', 'generate_lead', { project: projectInput.value, method: 'Form Popup' });
             showStep(3);
-            window.open('Insider_Guide/Guide.pdf', '_blank');
+            if (!guideSaved) downloadGuide();
         }).catch(() => {
             b.disabled = false; b.textContent = 'Get information';
             err.textContent = 'Could not send — please try again or message us on WhatsApp.';

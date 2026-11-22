@@ -18,7 +18,7 @@ if (renderer) {
     renderer.setClearColor(0x000000, 0);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0xfaf6ee, 0.045);
+    scene.fog = new THREE.FogExp2(0xf5f7f3, 0.045);
     const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
     camera.position.set(0, 0, 16);
 
@@ -30,7 +30,8 @@ if (renderer) {
     const GA = Math.PI * (3 - Math.sqrt(5)); // golden angle
     const RMAX = 8.54, C = RMAX / Math.sqrt(N);
     const pos = new Float32Array(N * 3), col = new Float32Array(N * 3), seed = new Float32Array(N), size = new Float32Array(N);
-    const gold = new THREE.Color('#b5852f'), pale = new THREE.Color('#dcb765'), deep = new THREE.Color('#7b5719');
+    const gold = new THREE.Color('#0f6b5c'), pale = new THREE.Color('#ff5a2b'), deep = new THREE.Color('#ff6a3d');
+    const edge = new THREE.Color('#0e2421');
     const tmp = new THREE.Color();
     for (let i = 0; i < N; i++) {
         const r = C * Math.sqrt(i + 1), th = i * GA;
@@ -38,7 +39,7 @@ if (renderer) {
         pos[i * 3 + 1] = r * Math.sin(th);
         pos[i * 3 + 2] = -Math.pow(RMAX - r, 1.35) * 0.55 + (Math.random() - 0.5) * 0.15;
         const k = r / RMAX;
-        tmp.copy(deep).lerp(gold, Math.min(1, k * 1.6)).lerp(pale, Math.random() < 0.12 ? 0.8 : 0.0);
+        tmp.copy(deep).lerp(gold, Math.min(1, k * 3.2)).lerp(edge, Math.max(0, (k - 0.35) / 0.65)).lerp(pale, Math.random() < 0.07 ? 0.95 : 0.0);
         col[i * 3] = tmp.r; col[i * 3 + 1] = tmp.g; col[i * 3 + 2] = tmp.b;
         seed[i] = Math.random() * 100;
         size[i] = 0.6 + Math.random() * 1.4 + (Math.random() < 0.02 ? 2.5 : 0);
@@ -76,7 +77,7 @@ if (renderer) {
                 a *= a;
                 float fog = clamp(1.0 - (vDepth - 8.0) / 40.0, 0.18, 1.0);
                 float near = smoothstep(0.3, 2.5, vDepth);
-                gl_FragColor = vec4(vColor * (0.92 + vTw * 0.16), a * fog * near * uDim * (0.45 + vTw * 0.4));
+                gl_FragColor = vec4(vColor, min(1.0, a * 1.5) * fog * near * uDim * (0.62 + vTw * 0.38));
             }`
     });
     const points = new THREE.Points(geo, mat);
@@ -92,7 +93,7 @@ if (renderer) {
             pts.push(new THREE.Vector3(r * Math.cos(th + offset), r * Math.sin(th + offset), -Math.pow(Math.max(RMAX - r, 0), 1.35) * 0.55 + 0.02));
         }
         const g = new THREE.BufferGeometry().setFromPoints(pts);
-        const m = new THREE.LineBasicMaterial({ color: 0xa87a2a, transparent: true, opacity, blending: THREE.NormalBlending, depthWrite: false });
+        const m = new THREE.LineBasicMaterial({ color: 0xff5a2b, transparent: true, opacity, blending: THREE.NormalBlending, depthWrite: false });
         return new THREE.Line(g, m);
     }
     const arms = [arm(0, 0.38), arm(Math.PI, 0.22)];
@@ -149,18 +150,21 @@ if (renderer) {
         group.rotation.z = reduce ? 0 : t * 0.035 + smooth * Math.PI * 1.618;
         // on wide screens the disc sits to the right of the hero copy, then centres as you descend
         const wide = camera.aspect > 1.15;
-        group.position.x = wide ? 5.2 * Math.max(0, 1 - smooth * 7) : 0;
+        group.position.x = wide ? 8.2 * Math.max(0, 1 - smooth * 7) : 0;
         group.position.y = wide ? 0 : 4.6 * Math.max(0, 1 - smooth * 7);
-        group.rotation.x = Math.sin(t * 0.1) * 0.04;
+        // tilt the vortex so its depth reads as a real 3D funnel, then level out as you dive in
+        const tilt = Math.max(0, 1 - smooth * 5);
+        group.rotation.x = -0.62 * tilt + Math.sin(t * 0.22) * 0.05 + mouse.y * 0.08;
+        group.rotation.y = -0.34 * tilt + Math.cos(t * 0.18) * 0.05 + mouse.x * 0.1;
 
         // dim behind the Time Machine so numbers stay readable
         // full brightness in the hero, softer behind content, dimmest behind the Time Machine
         const vh = window.innerHeight;
-        let dim = 1 - Math.min(1, window.scrollY / (vh * 0.8)) * (mobile ? 0.68 : 0.5);
+        let dim = 1 - Math.min(1, window.scrollY / (vh * 0.8)) * 0.8;
         if (tm) {
             const r = tm.getBoundingClientRect();
             const overlap = Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0)) / vh;
-            dim -= overlap * 0.25;
+            dim -= overlap * 0.08;
         }
         uniforms.uDim.value += (dim - uniforms.uDim.value) * 0.08;
         uniforms.uTime.value = t;
